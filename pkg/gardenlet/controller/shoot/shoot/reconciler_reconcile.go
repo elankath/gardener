@@ -233,9 +233,10 @@ func (r *Reconciler) runReconcileShootFlow(ctx context.Context, o *operation.Ope
 			Dependencies: flow.NewTaskIDs(deployReferencedResources, waitUntilKubeAPIServerServiceIsReady),
 		})
 		deploySourceBackupEntry = g.Add(flow.Task{
-			Name:   "Deploying source backup entry",
-			Fn:     botanist.DeploySourceBackupEntry,
-			SkipIf: !isCopyOfBackupsRequired,
+			Name:         "Deploying source backup entry",
+			Fn:           botanist.DeploySourceBackupEntry,
+			SkipIf:       !isCopyOfBackupsRequired,
+			Dependencies: flow.NewTaskIDs(deployNamespace),
 		})
 		waitUntilSourceBackupEntryInGardenReconciled = g.Add(flow.Task{
 			Name:         "Waiting until the source backup entry has been reconciled",
@@ -673,10 +674,8 @@ func (r *Reconciler) runReconcileShootFlow(ctx context.Context, o *operation.Ope
 			Dependencies: flow.NewTaskIDs(waitUntilGardenerResourceManagerReady, waitUntilOperatingSystemConfigReady, deployKubeScheduler, waitUntilShootNamespacesReady),
 		})
 		deployVPNShoot = g.Add(flow.Task{
-			Name: "Deploying vpn-shoot system component",
-			Fn: flow.TaskFn(func(ctx context.Context) error {
-				return botanist.Shoot.Components.SystemComponents.VPNShoot.Deploy(ctx)
-			}).RetryUntilTimeout(defaultInterval, defaultTimeout),
+			Name:         "Deploying vpn-shoot system component",
+			Fn:           flow.TaskFn(botanist.DeployVPNShoot).RetryUntilTimeout(defaultInterval, defaultTimeout),
 			SkipIf:       o.Shoot.IsWorkerless || o.Shoot.HibernationEnabled,
 			Dependencies: flow.NewTaskIDs(waitUntilGardenerResourceManagerReady, deployGardenerResourceManager, deployKubeScheduler, deployVPNSeedServer, waitUntilShootNamespacesReady),
 		})

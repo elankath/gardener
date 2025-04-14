@@ -56,7 +56,7 @@ TYPOS                      := $(TOOLS_BIN_DIR)/typos
 # renovate: datasource=github-releases depName=golangci/golangci-lint
 GOLANGCI_LINT_VERSION ?= v2.0.2
 # renovate: datasource=github-releases depName=securego/gosec
-GOSEC_VERSION ?= v2.22.2
+GOSEC_VERSION ?= v2.22.3
 # renovate: datasource=github-releases depName=joelanford/go-apidiff
 GO_APIDIFF_VERSION ?= v0.8.2
 # renovate: datasource=github-releases depName=google/addlicense
@@ -65,7 +65,7 @@ GO_ADD_LICENSE_VERSION ?= v1.1.1
 GOIMPORTSREVISER_VERSION ?= v3.9.1
 GO_VULN_CHECK_VERSION ?= latest
 # renovate: datasource=github-releases depName=helm/helm
-HELM_VERSION ?= v3.17.2
+HELM_VERSION ?= v3.17.3
 # renovate: datasource=github-releases depName=kubernetes-sigs/kind
 KIND_VERSION ?= v0.27.0
 # renovate: datasource=github-releases depName=kubernetes/kubernetes
@@ -77,7 +77,7 @@ PROMTOOL_VERSION ?= 3.2.1
 # renovate: datasource=github-releases depName=protocolbuffers/protobuf
 PROTOC_VERSION ?= v30.2
 # renovate: datasource=github-releases depName=GoogleContainerTools/skaffold
-SKAFFOLD_VERSION ?= v2.14.2
+SKAFFOLD_VERSION ?= v2.15.0
 # renovate: datasource=github-releases depName=mikefarah/yq
 YQ_VERSION ?= v4.45.1
 # renovate: datasource=github-releases depName=ironcore-dev/vgopath
@@ -252,7 +252,8 @@ $(EXTENSION_GEN): go.mod
 endif
 
 $(SETUP_ENVTEST): $(call tool_version_file,$(SETUP_ENVTEST),$(CONTROLLER_RUNTIME_VERSION))
-	go build -o $(SETUP_ENVTEST) sigs.k8s.io/controller-runtime/tools/setup-envtest
+	curl -Lo $(SETUP_ENVTEST) https://github.com/kubernetes-sigs/controller-runtime/releases/download/$(CONTROLLER_RUNTIME_VERSION)/setup-envtest-$(SYSTEM_NAME)-$(SYSTEM_ARCH)
+	chmod +x $(SETUP_ENVTEST)
 
 $(SKAFFOLD): $(call tool_version_file,$(SKAFFOLD),$(SKAFFOLD_VERSION))
 	curl -Lo $(SKAFFOLD) https://storage.googleapis.com/skaffold/releases/$(SKAFFOLD_VERSION)/skaffold-$(SYSTEM_NAME)-$(SYSTEM_ARCH)

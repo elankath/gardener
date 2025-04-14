@@ -96,7 +96,6 @@ build:
             - pkg/component/extensions/operatingsystemconfig/original/components/containerd
             - pkg/component/extensions/operatingsystemconfig/original/components/containerd/logrotate
             - pkg/component/extensions/operatingsystemconfig/original/components/containerd/templates/scripts/health-monitor.tpl.sh
-            - pkg/component/extensions/operatingsystemconfig/original/components/containerd/templates/scripts/init.sh
             - pkg/component/extensions/operatingsystemconfig/original/components/kubelet
             - pkg/component/extensions/operatingsystemconfig/original/components/rootcertificates
             - pkg/component/extensions/operatingsystemconfig/original/components/rootcertificates/templates/scripts/update-local-ca-certificates.tpl.sh
@@ -131,6 +130,7 @@ build:
             - pkg/component/networking/nginxingress
             - pkg/component/networking/nodelocaldns/constants
             - pkg/component/networking/vpn/seedserver
+            - pkg/component/networking/vpn/seedserver/templates/envoy.yaml.tpl
             - pkg/component/observability/logging
             - pkg/component/observability/logging/fluentbit
             - pkg/component/observability/logging/fluentcustomresources
@@ -276,6 +276,7 @@ build:
             - pkg/utils/errors
             - pkg/utils/flow
             - pkg/utils/gardener
+            - pkg/utils/gardener/gardenlet
             - pkg/utils/gardener/secretsrotation
             - pkg/utils/gardener/tokenrequest
             - pkg/utils/imagevector
@@ -1067,7 +1068,6 @@ build:
             - pkg/component/extensions/operatingsystemconfig/original/components/containerd
             - pkg/component/extensions/operatingsystemconfig/original/components/containerd/logrotate
             - pkg/component/extensions/operatingsystemconfig/original/components/containerd/templates/scripts/health-monitor.tpl.sh
-            - pkg/component/extensions/operatingsystemconfig/original/components/containerd/templates/scripts/init.sh
             - pkg/component/extensions/operatingsystemconfig/original/components/kubelet
             - pkg/component/extensions/operatingsystemconfig/original/components/nodeagent
             - pkg/component/extensions/operatingsystemconfig/original/components/rootcertificates

@@ -579,19 +579,6 @@ deploy:
               - apply
               - -f
               - example/gardener-local/controlplane/service-account-issuer-secret.yaml
-        # This is to make the upgrade tests work after the API of `ControllerDeployment` was augmented as part of
-        # https://github.com/gardener/gardener/pull/11593#issuecomment-2701622011.
-        # See https://prow.gardener.cloud/view/gs/gardener-prow/pr-logs/pull/gardener_gardener/11593/pull-gardener-e2e-kind-upgrade/1897328254847553536#1:build-log.txt%3A1491.
-        # TODO(rfranzke): Remove this after Gardener v1.114 has been released.
-        - host:
-            command:
-              - bash
-              - -ec
-              - |
-                until kubectl explain controllerdeployments.core.gardener.cloud | grep -q "injectGardenKubeconfig"; do
-                  echo "Waiting for API server to serve upgraded API..."
-                  sleep 0.5
-                done
 profiles:
   - name: extensions
     patches:
@@ -724,7 +711,6 @@ build:
             - pkg/component/extensions/operatingsystemconfig/original/components/containerd
             - pkg/component/extensions/operatingsystemconfig/original/components/containerd/logrotate
             - pkg/component/extensions/operatingsystemconfig/original/components/containerd/templates/scripts/health-monitor.tpl.sh
-            - pkg/component/extensions/operatingsystemconfig/original/components/containerd/templates/scripts/init.sh
             - pkg/component/extensions/operatingsystemconfig/original/components/kubelet
             - pkg/component/extensions/operatingsystemconfig/original/components/nodeagent
             - pkg/component/extensions/operatingsystemconfig/original/components/rootcertificates
@@ -1069,7 +1055,6 @@ build:
             - pkg/component/extensions/operatingsystemconfig/original/components/containerd
             - pkg/component/extensions/operatingsystemconfig/original/components/containerd/logrotate
             - pkg/component/extensions/operatingsystemconfig/original/components/containerd/templates/scripts/health-monitor.tpl.sh
-            - pkg/component/extensions/operatingsystemconfig/original/components/containerd/templates/scripts/init.sh
             - pkg/component/extensions/operatingsystemconfig/original/components/gardeneruser
             - pkg/component/extensions/operatingsystemconfig/original/components/gardeneruser/templates/scripts/reconcile.tpl.sh
             - pkg/component/extensions/operatingsystemconfig/original/components/journald
@@ -1116,6 +1101,7 @@ build:
             - pkg/component/networking/nodelocaldns/constants
             - pkg/component/networking/vpn/authzserver
             - pkg/component/networking/vpn/seedserver
+            - pkg/component/networking/vpn/seedserver/templates/envoy.yaml.tpl
             - pkg/component/networking/vpn/shoot
             - pkg/component/nodemanagement/dependencywatchdog
             - pkg/component/nodemanagement/machinecontrollermanager
@@ -1498,7 +1484,6 @@ build:
             - pkg/component/extensions/operatingsystemconfig/original/components/containerd
             - pkg/component/extensions/operatingsystemconfig/original/components/containerd/logrotate
             - pkg/component/extensions/operatingsystemconfig/original/components/containerd/templates/scripts/health-monitor.tpl.sh
-            - pkg/component/extensions/operatingsystemconfig/original/components/containerd/templates/scripts/init.sh
             - pkg/component/extensions/operatingsystemconfig/original/components/kubelet
             - pkg/component/extensions/operatingsystemconfig/original/components/nodeagent
             - pkg/component/extensions/operatingsystemconfig/original/components/rootcertificates
